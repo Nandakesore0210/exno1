@@ -94,5 +94,97 @@ STEP 6: Use zscore of to remove outliers
 ## df.dtypes
 ![image](https://github.com/user-attachments/assets/660e76c9-eef1-4468-b894-2528e6aa10d4)
 
+```
+import pandas as pd
+import seaborn as sns
+import numpy as np
+age=[1,24,13,14,18,39,76,67,54,3,21,34,26]
+af=pd.DataFrame(age)
+af
+```
+![image](https://github.com/user-attachments/assets/3f77b115-24df-42a5-a447-7474629bb6e8)
+
+## sns.boxplot(data=af)
+
+![image](https://github.com/user-attachments/assets/39dee2fe-0639-4266-a715-26c4e15e7de7)
+
+## sns.boxenplot(data=af)
+
+![image](https://github.com/user-attachments/assets/783f7d16-a1ea-4ba2-9733-c552c20108c8)
+
+## sns.scatterplot(data=af)
+
+![image](https://github.com/user-attachments/assets/0dcb599c-6863-402b-b1de-bb64a2401ac0)
+
+```
+q1=af.quantile(0.25)
+q2=af.quantile(0.5)
+q3=af.quantile(0.75)
+iq=q3-q1
+print(iq)
+```
+![image](https://github.com/user-attachments/assets/550d394e-be36-455c-a66e-a8df7436cf02)
+
+```
+q1=np.percentile(af,25)
+q2=np.percentile(af,75)
+iq=q2-q1
+print(iq)
+```
+![image](https://github.com/user-attachments/assets/59cd08f4-8d2d-48c5-bf4f-6dcff5bfea6f)
+
+```
+lower_bound=q1-1.5*q3
+upper_bound=q2+1.5*q3
+print(lower_bound)
+print(upper_bound)
+print("Q1",q1)
+print("Q3",q3)
+```
+![image](https://github.com/user-attachments/assets/5b574fd1-d259-4994-8115-2ec1bbf95f92)
+
+## af=af[((af>=lower_bound)&(af<=upper_bound))]
+
+![image](https://github.com/user-attachments/assets/ed4711dd-403b-4ab3-9327-29f007078927)
+
+## sns.boxplot(data=af)
+
+![image](https://github.com/user-attachments/assets/6d5cbdee-64e5-4863-b0d6-3bc604ce46c5)
+
+```
+import pandas as pd
+import numpy as np
+import seaborn as sns
+from scipy import stats
+df=pd.read_csv('iris.csv')
+df
+```
+![image](https://github.com/user-attachments/assets/2c83a5d9-d94a-438c-aebd-fc61443406e6)
+
+## sns.boxplot(x='sepal_width',data=df)
+
+![image](https://github.com/user-attachments/assets/35badff3-07c2-495e-a191-5a2ffb3ce65e)
+
+```
+c1=df.sepal_width.quantile(0.25)
+c3=df.sepal_width.quantile(0.75)
+iq=c3-c1
+```
+![image](https://github.com/user-attachments/assets/c11e62b1-66cf-4a16-bccc-ff9fab2b8e21)
+
+```
+rid=df[((df.sepal_width<(c1-1.5*iq)))|(df.sepal_width>(c3+1.5*iq))]
+rid['sepal_width']
+```
+![image](https://github.com/user-attachments/assets/31c88a54-2e6f-4486-a5b7-090cb59f5190)
+
+## delid=df[-((df.sepal_width<(c1-1.5*iq))|(df.sepal_width)>(c3+1.5*iq))]
+
+![image](https://github.com/user-attachments/assets/6eb97bb8-dd27-41be-98f3-b141f4500259)
+
+## sns.boxplot(x='sepal_width',data=delid)
+
+![image](https://github.com/user-attachments/assets/3de6cac3-208f-4274-9f12-2f7e280baa54)
+
 # Result
 Thus we have cleaned the data and removed the outliers by detection using IQR and Z-score method.
